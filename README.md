@@ -1,4 +1,4 @@
-# YOLO Deployment Course
+# YOLO Deployment
 
 这是一个面向初学者的 YOLO 部署与仿真验证课程项目。
 
