@@ -1,0 +1,17 @@
+# CPU-only PyTorch wheel source.
+--extra-index-url https://download.pytorch.org/whl/cpu
+
+# Deep learning framework used by Ultralytics YOLO.
+torch==2.4.1+cpu
+
+# Vision utilities matched with the PyTorch version above.
+torchvision==0.19.1+cpu
+
+# YOLO training, inference, and visualization toolkit.
+ultralytics==8.4.96
+
+# OpenCV Python package used for image and video processing.
+opencv-python
+
+# HTTP client used by the image download script.
+requests

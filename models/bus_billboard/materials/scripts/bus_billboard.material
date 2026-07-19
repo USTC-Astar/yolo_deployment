@@ -1,0 +1,28 @@
+// 定义一个 Gazebo/Ogre 材质，材质名称必须和 model.sdf 中的 name 对应。
+material YoloCourse/BusBillboard
+// 打开材质定义块。
+{
+  // 定义一种渲染技术。
+  technique
+  // 打开渲染技术定义块。
+  {
+    // 定义一次渲染 pass。
+    pass
+    // 打开 pass 定义块。
+    {
+      // 关闭光照影响，让图片颜色更接近原图。
+      lighting off
+      // 定义纹理单元，也就是要贴到平面上的图片。
+      texture_unit
+      // 打开纹理单元定义块。
+      {
+        // 指定纹理图片文件名，Gazebo 会在 materials/textures 中查找它。
+        texture bus_upright.jpg
+      // 结束纹理单元定义块。
+      }
+    // 结束 pass 定义块。
+    }
+  // 结束渲染技术定义块。
+  }
+// 结束材质定义块。
+}
