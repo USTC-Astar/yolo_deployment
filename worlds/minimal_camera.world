@@ -1,0 +1,95 @@
+<!-- 声明这是一个 SDF 仿真世界文件，版本使用 Gazebo 11 支持的 1.6。 -->
+<sdf version="1.6">
+  <!-- 定义一个名为 yolo_camera_world 的 Gazebo 世界。 -->
+  <world name="yolo_camera_world">
+    <!-- 引入太阳光模型，让仿真世界中有基础光照。 -->
+    <include>
+      <!-- 使用 Gazebo 默认模型库中的 sun。 -->
+      <uri>model://sun</uri>
+    </include>
+    <!-- 引入地面模型，让相机前方有可见参考平面。 -->
+    <include>
+      <!-- 使用 Gazebo 默认模型库中的 ground_plane。 -->
+      <uri>model://ground_plane</uri>
+    </include>
+    <!-- 创建一个静态模型，用来承载虚拟相机。 -->
+    <model name="fixed_camera_model">
+      <!-- 设置为静态模型，表示它不会受重力或碰撞影响而移动。 -->
+      <static>true</static>
+      <!-- 创建一个相机所在的刚体链接。 -->
+      <link name="camera_link">
+        <!-- 设置相机位置和姿态：x=0，y=-3，z=1.5，朝向世界前方。 -->
+        <pose>0 -3 1.5 0 0 0</pose>
+        <!-- 给相机链接添加一个可见的小盒子，方便在 Gazebo GUI 中识别相机位置。 -->
+        <visual name="camera_body_visual">
+          <!-- 定义小盒子的形状。 -->
+          <geometry>
+            <!-- 使用盒子几何体表示相机外壳。 -->
+            <box>
+              <!-- 设置盒子长宽高，单位是米。 -->
+              <size>0.2 0.1 0.1</size>
+            </box>
+          </geometry>
+          <!-- 设置相机外壳颜色。 -->
+          <material>
+            <!-- 设置漫反射颜色为蓝色。 -->
+            <ambient>0.0 0.0 1.0 1.0</ambient>
+            <!-- 设置受光照影响时的颜色为蓝色。 -->
+            <diffuse>0.0 0.0 1.0 1.0</diffuse>
+          </material>
+        </visual>
+        <!-- 在这个链接上安装一个虚拟相机传感器。 -->
+        <sensor name="camera_sensor" type="camera">
+          <!-- 设置相机始终开启。 -->
+          <always_on>true</always_on>
+          <!-- 设置相机每秒产生 5 帧图像。 -->
+          <update_rate>5</update_rate>
+          <!-- 设置相机本身的成像参数。 -->
+          <camera>
+            <!-- 设置水平视场角，单位是弧度，1.047 约等于 60 度。 -->
+            <horizontal_fov>1.047</horizontal_fov>
+            <!-- 设置输出图像参数。 -->
+            <image>
+              <!-- 设置图像宽度为 640 像素。 -->
+              <width>640</width>
+              <!-- 设置图像高度为 480 像素。 -->
+              <height>480</height>
+              <!-- 设置图像颜色格式为 RGB 8 位三通道。 -->
+              <format>R8G8B8</format>
+            </image>
+            <!-- 设置相机能看到的最近和最远距离。 -->
+            <clip>
+              <!-- 设置最近可见距离为 0.1 米。 -->
+              <near>0.1</near>
+              <!-- 设置最远可见距离为 100 米。 -->
+              <far>100</far>
+            </clip>
+          </camera>
+          <!-- 加载 Gazebo ROS 相机插件，把 Gazebo 图像发布成 ROS 话题。 -->
+          <plugin name="gazebo_ros_camera" filename="libgazebo_ros_camera.so">
+            <!-- 设置插件始终开启。 -->
+            <alwaysOn>true</alwaysOn>
+            <!-- 设置插件发布频率为每秒 5 帧。 -->
+            <updateRate>5.0</updateRate>
+            <!-- 设置相机名称，最终会影响 ROS 话题命名空间。 -->
+            <cameraName>sim_camera</cameraName>
+            <!-- 设置图像话题名称，通常会和 cameraName 组合成 /sim_camera/image_raw。 -->
+            <imageTopicName>image_raw</imageTopicName>
+            <!-- 设置相机内参话题名称，通常会组合成 /sim_camera/camera_info。 -->
+            <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+            <!-- 设置图像消息 header.frame_id 使用的坐标系名称。 -->
+            <frameName>sim_camera_link</frameName>
+          </plugin>
+        </sensor>
+      </link>
+    </model>
+    <!-- 引入公交车图片平面模型，让 YOLO 预训练模型能看到熟悉的公交车和人。 -->
+    <include>
+      <!-- 指定要加载的本地 Gazebo 模型名称。 -->
+      <uri>model://bus_billboard</uri>
+      <!-- 设置图片平面位置：放在相机前方，并和相机保持同一 y 坐标。 -->
+      <pose>3 -3 1.0 0 0 0</pose>
+    <!-- 结束公交车图片平面模型引入。 -->
+    </include>
+  </world>
+</sdf>

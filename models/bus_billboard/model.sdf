@@ -1,0 +1,46 @@
+<!-- 声明这是一个 SDF 模型文件，版本使用 Gazebo 11 支持的 1.6。 -->
+<sdf version="1.6">
+  <!-- 定义一个名为 bus_billboard 的模型。 -->
+  <model name="bus_billboard">
+    <!-- 设置为静态模型，表示图片平面不会受重力或碰撞影响。 -->
+    <static>true</static>
+    <!-- 创建承载图片平面的刚体链接。 -->
+    <link name="billboard_link">
+      <!-- 定义可视元素，用于让相机看到贴图平面。 -->
+      <visual name="bus_image_visual">
+        <!-- 设置平面姿态，让平面变成竖直画面并朝向相机。 -->
+        <pose>0 0 1.2 0 -1.5708 0</pose>
+        <!-- 定义几何形状。 -->
+        <geometry>
+          <!-- 使用平面几何体承载图片纹理。 -->
+          <plane>
+            <!-- 设置平面法向量沿 z 轴，后续通过 pose 把它转成竖直方向。 -->
+            <normal>0 0 1</normal>
+            <!-- 设置平面宽 2.4 米、高 3.2 米，比例接近 bus.jpg 的宽高比。 -->
+            <size>2.4 3.2</size>
+          <!-- 结束平面几何体定义。 -->
+          </plane>
+        <!-- 结束几何定义。 -->
+        </geometry>
+        <!-- 定义平面材质，让它显示公交车图片。 -->
+        <material>
+          <!-- 使用 Gazebo/Ogre 材质脚本。 -->
+          <script>
+            <!-- 指定材质脚本所在目录。 -->
+            <uri>model://bus_billboard/materials/scripts</uri>
+            <!-- 指定纹理图片所在目录，让材质脚本中的 bus.jpg 能被找到。 -->
+            <uri>model://bus_billboard/materials/textures</uri>
+            <!-- 指定材质脚本中定义的材质名称。 -->
+            <name>YoloCourse/BusBillboard</name>
+          <!-- 结束材质脚本定义。 -->
+          </script>
+        <!-- 结束材质定义。 -->
+        </material>
+      <!-- 结束可视元素定义。 -->
+      </visual>
+    <!-- 结束链接定义。 -->
+    </link>
+  <!-- 结束模型定义。 -->
+  </model>
+<!-- 结束 SDF 文件。 -->
+</sdf>
